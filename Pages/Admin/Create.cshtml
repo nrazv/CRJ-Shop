@@ -1,0 +1,27 @@
+﻿@page
+@model CRJ_Shop.Pages.Admin.Create
+
+@{
+}
+
+<div class="row my-5">
+    <div class="col-md-8 mx-auto p-3">
+        <h2>New Product</h2>
+        <form method="post">
+            <div class="col-sm-4 col-form-label">Name</div>
+            <div class="col-sm-8">
+                <input class="form-control" asp-for="CreateProduct.Name"/>
+                <span asp-validation-for="CreateProduct.Name" class="text-danger"></span>
+            </div>
+            <div class="col-sm-4 col-form-label">Description</div>
+            <div class="col-sm-8">
+                <input class="form-control" asp-for="CreateProduct.Description"/>
+                <span asp-validation-for="CreateProduct.Description" class="text-danger"></span>
+            </div>
+            <div class="mt-4"> 
+            <button class="btn btn-primary" type="submit">Create</button>
+            <a class="btn btn-danger" href="/Products" type="submit">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

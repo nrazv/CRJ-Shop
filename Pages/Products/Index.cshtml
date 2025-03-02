@@ -1,0 +1,25 @@
+﻿@page
+@model CRJ_Shop.Pages.Products.Index
+
+@{
+}
+
+<h1>Product page</h1>
+<div class="container">
+
+    <div class="my-5">Filter:</div>
+    <div class="row">
+        @foreach (var product in Model.ProductList)
+        {
+            <div class="col-3 mb-3">
+                <div class="card h-150">
+                    <div class="card-body">
+                        <h4>@product.Name</h4>
+                        <div>@product.Description</div>
+                        <button class="btn-primary py-1 h6 px-2 rounded-3 mt-4">Add to cart</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
