@@ -10,8 +10,7 @@ namespace CRJ_Shop.Models
 		[MaxLength(100)]
 		public string Name { get; set; }
 
-		[MaxLength(100)]
-		public string Description { get; set; }
+		[MaxLength(100)] public string? Description { get; set; } = "";
 
 		public Double Price { get; set; }
 		public string? Category { get; set; } = "";

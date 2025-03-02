@@ -29,7 +29,9 @@ public class Create : PageModel
         Product product = new Product()
         {
             Name = CreateProduct.Name,
-            Description = CreateProduct.Description
+            Description = CreateProduct.Description,
+            Price = CreateProduct.Price,
+            Category = CreateProduct.Category,
         };
 
        

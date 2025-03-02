@@ -11,6 +11,8 @@
     <th>ID</th>
     <th>Product Name</th>
     <th>Description</th>
+    <th>Category</th>
+    <th>Price</th>
     <th class="text-end">Actions</th>
     </thead>
     <tbody>
@@ -20,12 +22,16 @@
             <td>@product.Id</td>
             <td>@product.Name</td>
             <td>@product.Description</td>
+            <td>@product.Category</td>
+            <td>@product.Price SEK</td>
             <td class="text-end">
-                <a class="btn btn-primary">Edit</a>
+                <a class="btn btn-primary" asp-page="/admin/edit" asp-route-id="@product.Id">Edit</a>
                 <a class="btn btn-success">Details</a>
-                <a class="btn btn-danger">Delete</a>
+                <a class="btn btn-danger" asp-page="/admin/delete" asp-route-id="@product.Id">Delete</a>
             </td>
         </tr>
     }
     </tbody>
 </table>
+
+

@@ -13,10 +13,17 @@
                 <input class="form-control" asp-for="CreateProduct.Name"/>
                 <span asp-validation-for="CreateProduct.Name" class="text-danger"></span>
             </div>
+            
             <div class="col-sm-4 col-form-label">Description</div>
             <div class="col-sm-8">
                 <input class="form-control" asp-for="CreateProduct.Description"/>
                 <span asp-validation-for="CreateProduct.Description" class="text-danger"></span>
+            </div>
+            
+            <div class="col-sm-4 col-form-label">Price</div>
+            <div class="col-sm-8">
+                <input class="form-control" asp-for="CreateProduct.Price"/>
+                <span asp-validation-for="CreateProduct.Price" class="text-danger"></span>
             </div>
             <div class="mt-4"> 
             <button class="btn btn-primary" type="submit">Create</button>

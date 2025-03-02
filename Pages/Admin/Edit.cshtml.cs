@@ -8,46 +8,43 @@ namespace CRJ_Shop.Pages.Admin;
 
 public class Edit : PageModel
 {
-    private readonly AppDbContext _context;
+	private readonly AppDbContext _context;
 
-    public Edit(AppDbContext context)
-    {
-        _context = context;
-    }
+	public Edit(AppDbContext context)
+	{
+		_context = context;
+	}
 
-    [BindProperty]
-    public Product Product { get; set; } = default;
-    
-    public async Task<IActionResult> OnGet(int? id)
-    {
-        if (id == null)
-        {
-            return RedirectToPage("/Index");
-        }
+	[BindProperty] public Product Product { get; set; }
 
-        var products = await _context.Products.FirstOrDefaultAsync(e => e.Id == id);
-        if (products == null)
-        {
-            return RedirectToPage("/Index");
-        }
-        else
-        {
-            Product = products;
-            return Page();
-        }
-    }
-    
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-            else
-            {
-                _context.Products.Update(Product);
-                await _context.SaveChangesAsync();
-                return RedirectToPage("Admin/Products");
-            }
-        }
+	public async Task<IActionResult> OnGetAsync(int? id)
+	{
+		if (id == null)
+		{
+			return RedirectToPage("/Index");
+		}
+
+		var products = await _context.Products.FirstOrDefaultAsync(e => e.Id == id);
+		if (products == null)
+		{
+			return RedirectToPage("/Index");
+		}
+
+		Product = products;
+		return Page();
+	}
+
+	public async Task<IActionResult> OnPostAsync()
+	{
+		if (!ModelState.IsValid)
+		{
+			return Page();
+		}
+		else
+		{
+			_context.Products.Update(Product);
+			await _context.SaveChangesAsync();
+			return RedirectToPage("/Admin/Products");
+		}
+	}
 }
