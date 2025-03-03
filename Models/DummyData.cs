@@ -1,5 +1,4 @@
 ﻿using CRJ_Shop.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace CRJ_Shop.Models;
 
