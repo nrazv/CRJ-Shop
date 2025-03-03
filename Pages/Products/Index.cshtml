@@ -5,7 +5,12 @@
 }
 
 <h1 class="text-left container my-5 fw-bold">Our products</h1>
+
 <div class="container my-5">
+    @* check if you are logged in as admin *@
+    @* @if (User.IsInRole("admin")) *@
+    <a asp-page="/products/create" class="btn btn-success ">Create new product</a>
+    
     <div class="my-5">
         <h4 class="fw-bold">Filter:</h4>
         <div class="d-flex gap-2">
@@ -21,13 +26,13 @@
                 <option>M</option>
                 <option>L</option>
                 <option>XL</option>
-            </select> 
+            </select>
         </div>
     </div>
     <div class="row">
         @foreach (var product in Model.ProductList)
         {
-            <div class="col-3 mb-2">
+            <div class="col-sm-6 col-md-4 col-lg-3 mb-2">
                 <div class="card h-150 pb-2">
 
                     <a asp-page="/products/product" asp-route-id="@product.Id" class="card-body text-black text-decoration-none">
@@ -35,11 +40,19 @@
                         <h4 class="fw-bold">@product.Name</h4>
                         <div>@product.Description</div>
                     </a>
+                    
+                    @* @if(!User.IsInRole("admin")) *@
                     <div class="px-3">
                         <button class="btn btn-primary py-1 h6 px-2 rounded-3 mt-1 mb-2">Add to cart</button>
                     </div>
-                </div>
 
+                    @* @if (User.IsInRole("admin")) *@
+                    <div class="d-flex flex-column gap-2 px-3">
+                        <a asp-page="/products/edit" asp-route-id="@product.Id" class="btn btn-secondary">Edit</a>
+                        <a asp-page="/products/details" asp-route-id="@product.Id" class="btn btn-outline-primary">Details</a>
+                        <a asp-page="/products/delete" asp-route-id="@product.Id" class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
             </div>
         }
     </div>
