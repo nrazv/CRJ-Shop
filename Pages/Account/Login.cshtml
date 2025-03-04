@@ -1,0 +1,22 @@
+﻿@page
+@model CRJ_Shop.Pages.Account.LoginModel
+@{
+}
+
+<h1>login</h1>
+
+<form method="post">
+	<label>Email</label>
+	<input type="email" asp-for="Email" required/>
+
+	<label>Password</label>
+	<input type="password" asp-for="Password" required />
+
+	<button type="submit">Log in</button>
+</form>
+
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+	<p style="color:red">@Model.ErrorMessage</p>
+}
