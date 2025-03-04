@@ -10,5 +10,7 @@ namespace CRJ_Shop.Data
         }
 
         public DbSet<Product> Products { get; set; }
+
+
     }
 }
