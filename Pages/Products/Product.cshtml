@@ -17,7 +17,7 @@
         }
         <div class="col-6">
             <div class="mt-4">
-                <img src="https://craftsnippets.com/articles_images/placeholder/placeholder.jpg" class="w-100" alt="Example image"/>
+                <img src="@(!string.IsNullOrEmpty(@Model.Product.Image) ? @Model.Product.Image : "https://placehold.co/600x400")" class="w-100 mb-2" alt="Example image"/>
             </div>
         </div>
         <div class="col-4 mx-auto d-flex flex-column justify-content-center ml-2">
