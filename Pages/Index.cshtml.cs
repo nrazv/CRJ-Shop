@@ -1,19 +1,28 @@
+using CRJ_Shop.Data;
+using CRJ_Shop.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace CRJ_Shop.Pages;
 
 public class IndexModel : PageModel
 {
-    private readonly ILogger<IndexModel> _logger;
+    // Property
+    private readonly AppDbContext dbContext;
 
-    public IndexModel(ILogger<IndexModel> logger)
+
+    public List<Product> Products { get; set; }
+
+    // Konstruktor
+    public IndexModel(AppDbContext dbContext)
     {
-        _logger = logger;
+        this.dbContext = dbContext;
     }
 
-    public void OnGet()
+    // Method
+    public async Task OnGet()
     {
-
+        Products = await dbContext.Products.ToListAsync();
     }
 }
