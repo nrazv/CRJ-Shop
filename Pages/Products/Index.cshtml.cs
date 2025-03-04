@@ -14,7 +14,7 @@ public class Index : PageModel
         _database = database;
     }
     
-    public List<Product> ProductList { get; set; }
+    public List<Models.Product> ProductList { get; set; }
     public async Task OnGet()
     {
         ProductList = await _database.Products.ToListAsync();
