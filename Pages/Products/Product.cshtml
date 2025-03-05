@@ -7,13 +7,13 @@
     <a class="text-decoration-none" href="/products">&#10094; Back <i class="bi bi-bag"></i></a>
     <div class="row mt-2">
         <h1 class="fw-bold">@Model.Product.Name</h1>
-        @if (string.IsNullOrEmpty(Model.Product.Category))
+        @if (Model.Product.Categories is null)
         {
             <p>Uncategorized</p>
         }
         else
         {
-            <p>@Model.Product.Category</p>
+            <p>@Model.Product.Categories</p>
         }
         <div class="col-6">
             <div class="mt-4">
