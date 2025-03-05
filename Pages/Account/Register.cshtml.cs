@@ -7,10 +7,12 @@ namespace CRJ_Shop.Pages.Account
     public class RegisterModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public RegisterModel(UserManager<IdentityUser> userManager)
+        public RegisterModel(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         [BindProperty]
@@ -24,9 +26,16 @@ namespace CRJ_Shop.Pages.Account
         {
         }
 
-
         public async Task<IActionResult> OnPostAsync()
         {
+            var roleName = "Admin"; 
+            var roleExist = await _roleManager.RoleExistsAsync(roleName);
+            if (!roleExist)
+            {
+                var role = new IdentityRole(roleName);
+                await _roleManager.CreateAsync(role);
+            }
+
             var user = new IdentityUser
             {
                 UserName = Email,
@@ -36,6 +45,8 @@ namespace CRJ_Shop.Pages.Account
 
             if (result.Succeeded)
             {
+                await _userManager.AddToRoleAsync(user, roleName);
+
                 return RedirectToPage("/Account/Login");
             }
 

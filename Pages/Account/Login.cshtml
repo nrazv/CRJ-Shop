@@ -3,17 +3,23 @@
 @{
 }
 
-<h1>login</h1>
+<h1 class="text-center mt-5">Login</h1>
 
-<form method="post">
-	<label>Email</label>
-	<input type="email" asp-for="Email" required/>
-
-	<label>Password</label>
-	<input type="password" asp-for="Password" required />
-
-	<button type="submit">Log in</button>
+<form method="post" class="d-flex flex-column gap-2 w-50 mx-auto">
+	<label class="form-label">Email</label>
+	<input class="form-control" type="email" asp-for="Email" required/>
+	
+	<label class="form-label">Password</label>
+	<input class="form-control" type="password" asp-for="Password" required/>
+	
+	<button class="btn btn-outline-dark" type="submit">Log in</button>
 </form>
+
+<span class="text-center mx-auto w-100 d-block my-2"> 
+	<a asp-page="/account/register" class="text-decoration-none">
+		Create an account 
+	</a>
+</span>
 
 
 @if (!string.IsNullOrEmpty(Model.ErrorMessage))
