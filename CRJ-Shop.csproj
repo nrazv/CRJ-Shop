@@ -19,4 +19,12 @@
 		<PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.13" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<_ContentIncludedByDefault Remove="Pages\Products\Product\Product.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Migrations\" />
+	</ItemGroup>
+
 </Project>

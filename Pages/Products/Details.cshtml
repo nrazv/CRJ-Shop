@@ -1,0 +1,33 @@
+﻿@page
+@model CRJ_Shop.Pages.Products.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1 class="fw-bold mt-4">Details</h1>
+
+<div class="my-4">
+    <table class="table">
+        <thead>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Category</th>
+        <th>Image</th>
+        </thead>
+        <tbody>
+        <tr>
+            <td>@Model.Product.Name</td>
+            <td>@Model.Product.Description</td>
+            <td>@Model.Product.Price</td>
+            <td>@Model.Product.Categories</td>
+            <td>@Model.Product.Image</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="form-group my-4">
+    <a class="btn btn-secondary" asp-page="./Edit" asp-route-id="@Model.Product.Id">Edit</a>
+    <a class="btn btn-danger" asp-page="./Index">Cancel</a>
+</div>
