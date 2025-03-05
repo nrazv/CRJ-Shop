@@ -13,12 +13,16 @@ namespace CRJ_Shop.Models
         [Required]
         [MaxLength(100)]
         public required string Title { get; set; }
+
         [Required]
         public required string Description { get; set; }
+
         [Required]
         public required Double Price { get; set; }
+
         [Required]
         public required List<ProductCategory> Categories { get; set; }
+
         [Required]
         public required string Image { get; set; }
         public int AvailableAmount { get; set; } = 100;

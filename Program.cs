@@ -2,7 +2,6 @@ using CRJ_Shop.Data;
 using CRJ_Shop.Models;
 using CRJ_Shop.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,9 +15,12 @@ var app = builder.Build();
 
 // SEED DATA
 
+
 using (var scope = app.Services.CreateScope())
 {
+
     var seedService = scope.ServiceProvider.GetRequiredService<SeedService>();
+    await seedService.SeedCategories();
     await seedService.SeedData();
 }
 

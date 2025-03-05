@@ -1,4 +1,5 @@
-﻿namespace CRJ_Shop.Models
+﻿
+namespace CRJ_Shop.Models
 {
     public class CartItem
     {
