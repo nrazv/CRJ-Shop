@@ -4,9 +4,21 @@
     ViewData["Title"] = "Home page";
 }
 
-<div>
-    @foreach(var product in Model.Products)
+<div class="container-fluid">
+    <div class=" row">
+    @foreach(var product in Model.Products.Take(12))
     {
-        <h1>@product.Name</h1>
-    }
+        <div class="col-3">
+            <div class=" card h-100">
+                <a class="card text-black text-decoration-none h-100 d-flex flex-column align-content-center" asp-page="/Products/Product" asp-route-id="@product.Id"> 
+                        <img class="w-100" src="@product.Image" />
+                        <h2 class="h5">@product.Name</h2>
+                        <h5 class="fw-bold font-monospace">@product.Price SEK</h5>
+                        <h4 class="text-truncate h6">@product.Description</h4>
+                </a>
+            
+            </div>
+        </div>
+        }<button class="w-25 mx-auto my-5 btn btn-primary">All products</button>
+    </div>
 </div>
