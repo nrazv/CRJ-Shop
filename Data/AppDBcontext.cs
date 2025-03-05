@@ -11,7 +11,19 @@ namespace CRJ_Shop.Data
 
         public DbSet<Product> Products { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<ProductCategory> ProductCategories { get; set; }
 
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder
+               .Entity<ProductCategory>()
+               .Property(e => e.Category)
+               .HasConversion(
+                v => v.ToString(),
+                v => (Category)Enum.Parse(typeof(Category), v)
+           );
+        }
 
     }
 }

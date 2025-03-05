@@ -17,11 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
+    <_ContentIncludedByDefault Remove="Pages\Products\Product\Product.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
-    <_ContentIncludedByDefault Remove="Pages\Products\Product\Product.cshtml" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

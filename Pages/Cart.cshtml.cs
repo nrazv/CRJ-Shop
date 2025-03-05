@@ -42,13 +42,16 @@ namespace CRJ_Shop.Pages
         public async Task<IActionResult> OnPostAddToCart(int productId)
         {
             var cartItem = await _context.CartItems.FirstOrDefaultAsync(m => m.ProductId == productId);
+            var product = await _context.Products.FirstOrDefaultAsync(m => m.Id == productId);
+
 
             if (cartItem == null)
             {
                 cartItem = new CartItem()
                 {
                     ProductId = productId,
-                    Quantity = 1
+                    Quantity = 1,
+                    Product = product
                 };
                 _context.CartItems.Add(cartItem);
             }

@@ -29,7 +29,6 @@ public class SeedService
                 Product product = ProductMapper.mapSeedToProduct(seedProduct);
                 await addIfNotExists(product);
             }
-            await _dbContext.SaveChangesAsync();
         }
         catch (Exception ex)
         {
@@ -45,6 +44,7 @@ public class SeedService
         if (exists is false)
         {
             _dbContext.Products.Add(product);
+            await _dbContext.SaveChangesAsync();
         }
     }
 
