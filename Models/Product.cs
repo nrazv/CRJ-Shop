@@ -9,7 +9,6 @@ namespace CRJ_Shop.Models
         public int Id { get; set; }
 
         public required string Name { get; set; }
-
         [Required]
         [MaxLength(100)]
         public required string Title { get; set; }
@@ -21,7 +20,7 @@ namespace CRJ_Shop.Models
         public required Double Price { get; set; }
 
         [Required]
-        public required List<ProductCategory> Categories { get; set; }
+        public required List<ProductCategory> ProductCategories { get; set; } = new();
 
         [Required]
         public required string Image { get; set; }
