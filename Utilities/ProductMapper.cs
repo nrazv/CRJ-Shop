@@ -12,17 +12,17 @@ public class ProductMapper
         Price = seedProduct.price,
         Description = seedProduct.description,
         Image = seedProduct.images[0],
-        Categories = new List<ProductCategory>()
+        ProductCategories = new List<ProductCategory>()
     };
 
-    public static Category GetCategory(string categoryName) => categoryName switch
+    public static AvailableCategories GetCategory(string categoryName) => categoryName switch
     {
-        "Shoes" => Category.Shoes,
-        "Electronics" => Category.Electronics,
-        "Clothes" => Category.Clothes,
-        "Toys" => Category.Toys,
-        "Sports" => Category.Sports,
-        "Miscellaneous" => Category.Miscellaneous,
-        _ => Category.Miscellaneous,
+        "Shoes" => AvailableCategories.Shoes,
+        "Electronics" => AvailableCategories.Electronics,
+        "Clothes" => AvailableCategories.Clothes,
+        "Toys" => AvailableCategories.Toys,
+        "Sports" => AvailableCategories.Sports,
+        "Miscellaneous" => AvailableCategories.Miscellaneous,
+        _ => AvailableCategories.Miscellaneous,
     };
 }

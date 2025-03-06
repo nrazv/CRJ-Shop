@@ -27,8 +27,7 @@ public class SeedService
             foreach (var seedProduct in seedProducts)
             {
                 Product product = ProductMapper.mapSeedToProduct(seedProduct);
-                var category = ProductMapper.GetCategory(seedProduct.category.name);
-                var productCategory = _dbContext.ProductCategories.Where(p => p.Category == category);
+                setProductCategory(product, seedProduct.category.name);
                 await addIfNotExists(product);
             }
         }
@@ -38,9 +37,17 @@ public class SeedService
         }
     }
 
+
+    private void setProductCategory(Product product, string categoryname)
+    {
+        var categoryEnum = ProductMapper.GetCategory(categoryname);
+        var category = _dbContext.Categories.First(p => p.ProductCategory == categoryEnum);
+        var productCategory = new ProductCategory { Product = product, Category = category, CategoryId = category.Id };
+        product.ProductCategories.Add(productCategory);
+    }
+
     public async Task addIfNotExists(Product product)
     {
-
         bool exists = await _dbContext.Products.AnyAsync(p => p.Name == product.Name);
 
         if (exists is false)
@@ -52,13 +59,13 @@ public class SeedService
 
     public async Task SeedCategories()
     {
-        List<ProductCategory> productCategories = new List<ProductCategory> {
-                        new ProductCategory { Category = Category.Toys },
-                        new ProductCategory { Category = Category.Sports },
-                        new ProductCategory { Category = Category.Electronics },
-                        new ProductCategory { Category = Category.Miscellaneous },
-                        new ProductCategory { Category = Category.Shoes },
-                        new ProductCategory { Category = Category.Clothes } };
+        List<Category> productCategories = new List<Category> {
+                        new Category { ProductCategory = AvailableCategories.Toys },
+                        new Category { ProductCategory = AvailableCategories.Sports },
+                        new Category { ProductCategory = AvailableCategories.Electronics },
+                        new Category { ProductCategory = AvailableCategories.Miscellaneous },
+                        new Category { ProductCategory = AvailableCategories.Shoes },
+                        new Category { ProductCategory = AvailableCategories.Clothes } };
 
 
         foreach (var category in productCategories)
@@ -69,14 +76,12 @@ public class SeedService
     }
 
 
-    public async Task addCategoryIfNotExists(ProductCategory productCategory)
+    public async Task addCategoryIfNotExists(Category productCategory)
     {
-
-        bool exists = await _dbContext.ProductCategories.AnyAsync(p => p.Category == productCategory.Category);
-
+        bool exists = await _dbContext.Categories.AnyAsync(p => p.ProductCategory == productCategory.ProductCategory);
         if (exists is false)
         {
-            _dbContext.ProductCategories.Add(productCategory);
+            _dbContext.Categories.Add(productCategory);
             await _dbContext.SaveChangesAsync();
         }
     }
