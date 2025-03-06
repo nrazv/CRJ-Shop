@@ -28,7 +28,7 @@ namespace CRJ_Shop.Pages.Account
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var roleName = "Admin"; 
+            var roleName = "User"; 
             var roleExist = await _roleManager.RoleExistsAsync(roleName);
             if (!roleExist)
             {
