@@ -7,17 +7,18 @@
     <a class="text-decoration-none" href="/products">&#10094; Back <i class="bi bi-bag"></i></a>
     <div class="row mt-2">
         <h1 class="fw-bold">@Model.Product.Name</h1>
-        @if (string.IsNullOrEmpty(Model.Product.Category))
+        @if (Model.Product.Categories is null)
         {
             <p>Uncategorized</p>
         }
         else
         {
-            <p>@Model.Product.Category</p>
+            <p>@Model.Product.Categories</p>
         }
+        @* <div>@if(User.IsInRole("User")) {<div>HEJ USER!</div>} *@
         <div class="col-6">
             <div class="mt-4">
-                <img src="https://craftsnippets.com/articles_images/placeholder/placeholder.jpg" class="w-100" alt="Example image"/>
+                <img src="@(!string.IsNullOrEmpty(@Model.Product.Image) ? @Model.Product.Image : "https://placehold.co/600x400")" class="w-100 mb-2" alt="Example image"/>
             </div>
         </div>
         <div class="col-4 mx-auto d-flex flex-column justify-content-center ml-2">

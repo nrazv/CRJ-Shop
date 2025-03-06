@@ -8,12 +8,24 @@ namespace CRJ_Shop.Models
     {
         public int Id { get; set; }
 
+        public required string Name { get; set; }
+
         [Required]
         [MaxLength(100)]
-        public string Name { get; set; }
-        public string? Description { get; set; } = "";
-        public Double Price { get; set; }
-        public string? Category { get; set; } = "";
-        public string? Image { get; set; } = "";
+        public required string Title { get; set; }
+
+        [Required]
+        public required string Description { get; set; }
+
+        [Required]
+        public required Double Price { get; set; }
+
+        [Required]
+        public required List<ProductCategory> Categories { get; set; }
+
+        [Required]
+        public required string Image { get; set; }
+        public int AvailableAmount { get; set; } = 100;
+
     }
 }

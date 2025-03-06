@@ -1,11 +1,21 @@
 using CRJ_Shop.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using CRJ_Shop.Models;
 using CRJ_Shop.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+// configure IdentityDbContext for authentication
+builder.Services.AddDbContext<CRJ_Shop.Data.IdentityDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// configure Identity to use IdentityDbContext
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+	.AddEntityFrameworkStores<CRJ_Shop.Data.IdentityDbContext>()
+	.AddDefaultTokenProviders();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -16,9 +26,12 @@ var app = builder.Build();
 
 // SEED DATA
 
+
 using (var scope = app.Services.CreateScope())
 {
+
     var seedService = scope.ServiceProvider.GetRequiredService<SeedService>();
+    await seedService.SeedCategories();
     await seedService.SeedData();
 }
 
@@ -35,6 +48,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
