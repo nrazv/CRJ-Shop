@@ -1,28 +1,63 @@
 ﻿using CRJ_Shop.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace CRJ_Shop.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<IdentityUser>
     {
+
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
+
         }
 
         public DbSet<Product> Products { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<Category> Categories { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
-
+        public DbSet<AppUser> AppUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
+
+            string customerRoleId = Guid.NewGuid().ToString();
+            string adminUserId = Guid.NewGuid().ToString();
+
+            // Seed roles
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole { Id = adminUserId, Name = "Admin", NormalizedName = "ADMIN" },
+                new IdentityRole { Id = customerRoleId, Name = "Customer", NormalizedName = "CUSTOMER" }
+            );
+
             modelBuilder
-               .Entity<ProductCategory>()
-               .Property(e => e.Category)
+               .Entity<Category>()
+               .Property(e => e.ProductCategory)
                .HasConversion(
                 v => v.ToString(),
-                v => (Category)Enum.Parse(typeof(Category), v)
+                v => (AvailableCategories)Enum.Parse(typeof(AvailableCategories), v)
            );
+
+            modelBuilder.Entity<ProductCategory>().HasKey(pc => new
+            {
+                pc.ProductId,
+                pc.CategoryId,
+            });
+
+            modelBuilder.Entity<ProductCategory>()
+             .HasOne(pc => pc.Product)
+             .WithMany(p => p.ProductCategories)
+             .HasForeignKey(pc => pc.ProductId);
+
+            modelBuilder.Entity<ProductCategory>()
+                .HasOne(pc => pc.Category)
+                .WithMany(c => c.ProductCategories)
+                .HasForeignKey(pc => pc.CategoryId);
+
         }
 
     }

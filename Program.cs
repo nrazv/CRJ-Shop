@@ -9,13 +9,10 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 
-// configure IdentityDbContext for authentication
-builder.Services.AddDbContext<CRJ_Shop.Data.IdentityDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
 // configure Identity to use IdentityDbContext
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-	.AddEntityFrameworkStores<CRJ_Shop.Data.IdentityDbContext>()
-	.AddDefaultTokenProviders();
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
 
 // Add services to the container.
 builder.Services.AddRazorPages();

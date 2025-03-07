@@ -1,4 +1,6 @@
 ﻿@page
+@using CRJ_Shop.Models
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model CRJ_Shop.Pages.Products.Index
 
 
@@ -9,30 +11,33 @@
 <h1 class="text-left container my-5 fw-bold">Our products</h1>
 
 <div class=" my-5">
-    @* check if you are logged in as admin *@
-    @if (User.IsInRole("admin"))
+    @if (User.IsInRole("Admin"))
     {
         <a asp-page="/products/create" class="btn btn-success ">Create new product</a>
     }
 
-    <div class="my-5">
-        <h4 class="fw-bold">Filter:</h4>
-        <div class="d-flex gap-2">
-            <select class="form-select w-25" aria-label="Select color">
-                <option selected disabled>Color</option>
-                <option>Red</option>
-                <option>Blue</option>
-                <option>Black</option>
+    <form method="get" class="d-flex justify-content-between  w-100 my-4 gap-2">
+        <div class="d-flex justify-content-between w-100 gap-2">
+            <select class="form-select w-25" id="selectedCategoryId"
+                    name="selectedCategoryId"
+                    onchange="this.form.submit()">
+                <option value="">All Categories</option>
+                @foreach (var category in Model.Categories)
+                {
+                    <option value="@category.Id" selected="@(category.Id == Model.SelectedCategoryId ? "selected" : null)">
+                        @category.ProductCategory
+                    </option>
+                }
             </select>
-            <select class="form-select w-25">
-                <option selected disabled>Size</option>
-                <option>S</option>
-                <option>M</option>
-                <option>L</option>
-                <option>XL</option>
-            </select>
+                <input type="text"
+                       placeholder="Search"
+                       class="form-control"
+                       id="searchQuery"
+                       name="searchQuery"
+                       value="@Model.SearchQuery"
+                       onchange="this.form.submit()" />
         </div>
-    </div>
+    </form>
     <div class="row">
         @foreach (var product in Model.ProductList)
         {
