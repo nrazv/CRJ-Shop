@@ -13,7 +13,7 @@ namespace CRJ_Shop.Pages.Account
 
         public LoginModel(SignInManager<IdentityUser> signInManager)
         {
-			_signInManager = signInManager;
+            _signInManager = signInManager;
         }
 
         [BindProperty]
