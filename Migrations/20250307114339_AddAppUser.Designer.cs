@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace CRJ_Shop.Migrations.IdentityDb
+namespace CRJ_Shop.Migrations
 {
-    [DbContext(typeof(IdentityDbContext))]
-    [Migration("20250305145723_User")]
-    partial class User
+    [DbContext(typeof(AppDbContext))]
+    [Migration("20250307114339_AddAppUser")]
+    partial class AddAppUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,101 @@ namespace CRJ_Shop.Migrations.IdentityDb
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("CRJ_Shop.Models.CartItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("CartItems");
+                });
+
+            modelBuilder.Entity("CRJ_Shop.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ProductCategory")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductCategory")
+                        .IsUnique();
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("CRJ_Shop.Models.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AvailableAmount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("CRJ_Shop.Models.ProductCategory", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("ProductCategories");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -54,13 +149,13 @@ namespace CRJ_Shop.Migrations.IdentityDb
                     b.HasData(
                         new
                         {
-                            Id = "9e7e80ed-7384-455b-8b2f-6a818cd3b3ef",
+                            Id = "82f103bb-25eb-4416-84c8-960f4be036c4",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "e003fed9-aa90-42b9-b372-2d9a4a384d52",
+                            Id = "79298828-2105-4022-8c18-e0a7b9172f3b",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -158,14 +253,14 @@ namespace CRJ_Shop.Migrations.IdentityDb
                     b.HasData(
                         new
                         {
-                            Id = "17729ce3-0f7b-4d93-ba85-f0caa2699a0e",
+                            Id = "537a5b04-8496-4129-bd44-8a4fe1c9e0d0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f73fcb5a-8158-4773-aed8-79d7b430497d",
+                            ConcurrencyStamp = "7335e041-8f69-4c4d-9b45-18a2cc562f94",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAENLvE6kRg/rjedNBIexHD0uTKEsNAlO355fA7UQ8cpwP7I4x9ws5K1Hyq53+TCeBnA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHAu804PTrEKm+y/Ag5zhx0R2aabSsrxd4W0XXJvWf7cWkwDYyotr8FLyThqf+MDuA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3b8e2516-ca0e-4c2c-9ac7-990a9ad3baab",
+                            SecurityStamp = "aa151085-a710-43c4-91e3-33f7a3d28690",
                             TwoFactorEnabled = false,
                             UserName = "admin@test.com"
                         });
@@ -235,8 +330,8 @@ namespace CRJ_Shop.Migrations.IdentityDb
                     b.HasData(
                         new
                         {
-                            UserId = "17729ce3-0f7b-4d93-ba85-f0caa2699a0e",
-                            RoleId = "9e7e80ed-7384-455b-8b2f-6a818cd3b3ef"
+                            UserId = "537a5b04-8496-4129-bd44-8a4fe1c9e0d0",
+                            RoleId = "82f103bb-25eb-4416-84c8-960f4be036c4"
                         });
                 });
 
@@ -257,6 +352,36 @@ namespace CRJ_Shop.Migrations.IdentityDb
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("CRJ_Shop.Models.CartItem", b =>
+                {
+                    b.HasOne("CRJ_Shop.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("CRJ_Shop.Models.ProductCategory", b =>
+                {
+                    b.HasOne("CRJ_Shop.Models.Category", "Category")
+                        .WithMany("ProductCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CRJ_Shop.Models.Product", "Product")
+                        .WithMany("ProductCategories")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -308,6 +433,16 @@ namespace CRJ_Shop.Migrations.IdentityDb
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CRJ_Shop.Models.Category", b =>
+                {
+                    b.Navigation("ProductCategories");
+                });
+
+            modelBuilder.Entity("CRJ_Shop.Models.Product", b =>
+                {
+                    b.Navigation("ProductCategories");
                 });
 #pragma warning restore 612, 618
         }
