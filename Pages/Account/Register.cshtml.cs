@@ -49,32 +49,11 @@ namespace CRJ_Shop.Pages.Account
                 user.FirsName = Input.FirstName;
                 user.LastName = Input.LastName;
                 user.Address = Input.Address;
-                await _userManager.AddToRoleAsync(user, "User");
+                user.Email = Input.Email;
+                await _userManager.AddToRoleAsync(user, "Customer");
 
                 return RedirectToPage("/Account/Login");
             }
-
-            //var roleName = "User";
-            //var roleExist = await _roleManager.RoleExistsAsync(roleName);
-            //if (!roleExist)
-            //{
-            //    var role = new IdentityRole(roleName);
-            //    await _roleManager.CreateAsync(role);
-            //}
-
-            //var user = new IdentityUser
-            //{
-            //    UserName = Email,
-            //    Email = Email
-            //};
-            //var result = await _userManager.CreateAsync(user, Password);
-
-            //if (result.Succeeded)
-            //{
-            //    await _userManager.AddToRoleAsync(user, roleName);
-
-            //    return RedirectToPage("/Account/Login");
-            //}
 
             ErrorMessage = "Error, try again.";
             return Page();

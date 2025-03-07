@@ -11,7 +11,7 @@
 <h1 class="text-left container my-5 fw-bold">Our products</h1>
 
 <div class=" my-5">
-    @if (User.IsInRole("admin"))
+    @if (User.IsInRole("Admin"))
     {
         <a asp-page="/products/create" class="btn btn-success ">Create new product</a>
     }

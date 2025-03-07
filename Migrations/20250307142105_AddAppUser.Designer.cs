@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CRJ_Shop.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250307114837_AddAppUser1")]
-    partial class AddAppUser1
+    [Migration("20250307142105_AddAppUser")]
+    partial class AddAppUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -149,15 +149,15 @@ namespace CRJ_Shop.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a472a22d-72f4-450f-b011-49cdc304e24c",
+                            Id = "6f4b26f1-039e-43b9-af87-feae17f971e1",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "7cdb0eef-5ecd-45ff-a11b-54e1abbd47ca",
-                            Name = "User",
-                            NormalizedName = "USER"
+                            Id = "931a698a-b2b4-4e38-bbd6-5802a24b1719",
+                            Name = "Customer",
+                            NormalizedName = "CUSTOMER"
                         });
                 });
 
@@ -197,6 +197,11 @@ namespace CRJ_Shop.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -250,21 +255,9 @@ namespace CRJ_Shop.Migrations
 
                     b.ToTable("AspNetUsers", (string)null);
 
-                    b.HasData(
-                        new
-                        {
-                            Id = "b4ca5a25-cf47-491e-a0b0-21a01d05d7b4",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "06589aa2-6d63-4e21-9188-2166b290cd4b",
-                            Email = "admin@test.com",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEADRJSR4ocRUKQVLNvP5VEhZGhlOE8WjI94GP3Y/XRIy7Ii5i6CDm9ZU0AN+S4J8Kg==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "27f3cd33-a162-48e9-8992-c68e2a2f6383",
-                            TwoFactorEnabled = false,
-                            UserName = "admin@test.com"
-                        });
+                    b.HasDiscriminator().HasValue("IdentityUser");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -327,13 +320,6 @@ namespace CRJ_Shop.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "b4ca5a25-cf47-491e-a0b0-21a01d05d7b4",
-                            RoleId = "a472a22d-72f4-450f-b011-49cdc304e24c"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -353,6 +339,25 @@ namespace CRJ_Shop.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("CRJ_Shop.Models.AppUser", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirsName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("AppUser");
                 });
 
             modelBuilder.Entity("CRJ_Shop.Models.CartItem", b =>

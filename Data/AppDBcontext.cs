@@ -18,11 +18,21 @@ namespace CRJ_Shop.Data
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
+        public DbSet<AppUser> AppUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
+
+            string customerRoleId = Guid.NewGuid().ToString();
+            string adminUserId = Guid.NewGuid().ToString();
+
+            // Seed roles
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole { Id = adminUserId, Name = "Admin", NormalizedName = "ADMIN" },
+                new IdentityRole { Id = customerRoleId, Name = "Customer", NormalizedName = "CUSTOMER" }
+            );
 
             modelBuilder
                .Entity<Category>()
@@ -47,36 +57,6 @@ namespace CRJ_Shop.Data
                 .HasOne(pc => pc.Category)
                 .WithMany(c => c.ProductCategories)
                 .HasForeignKey(pc => pc.CategoryId);
-
-
-            string adminRoleId = Guid.NewGuid().ToString();
-            string userRoleId = Guid.NewGuid().ToString();
-            string adminUserId = Guid.NewGuid().ToString();
-
-            // Seed roles
-            modelBuilder.Entity<IdentityRole>().HasData(
-                new IdentityRole { Id = adminRoleId, Name = "Admin", NormalizedName = "ADMIN" },
-                new IdentityRole { Id = userRoleId, Name = "User", NormalizedName = "USER" }
-            );
-
-            // create an admin user with the password "password"
-            var hasher = new PasswordHasher<IdentityUser>();
-            var adminUser = new IdentityUser
-            {
-                Id = adminUserId,
-                UserName = "admin@test.com",
-                Email = "admin@test.com",
-                PasswordHash = hasher.HashPassword(null, "Password123!")
-            };
-
-            // inserts the admin user
-            modelBuilder.Entity<IdentityUser>().HasData(adminUser);
-
-            // assign the admin role to the admin user
-            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
-                new IdentityUserRole<string> { UserId = adminUserId, RoleId = adminRoleId }
-            );
-
 
         }
 
