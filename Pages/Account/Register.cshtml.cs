@@ -1,6 +1,5 @@
 using CRJ_Shop.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
@@ -9,16 +8,12 @@ namespace CRJ_Shop.Pages.Account
 {
     public class RegisterModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IUserStore<IdentityUser> _userStore;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly IUserStore<AppUser> _userStore;
 
-        public RegisterModel(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager,
-
-               IUserStore<IdentityUser> userStore)
+        public RegisterModel(UserManager<AppUser> userManager, IUserStore<AppUser> userStore)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
             _userStore = userStore;
         }
 

@@ -21,6 +21,9 @@ namespace CRJ_Shop.Models
 
         [Required]
         public required List<ProductCategory> ProductCategories { get; set; } = new();
+        [Required]
+        public required List<ProductOrder> ProductOrders { get; set; } = new();
+
 
         [Required]
         public required string Image { get; set; }

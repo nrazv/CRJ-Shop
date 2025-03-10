@@ -12,7 +12,8 @@ public class ProductMapper
         Price = seedProduct.price,
         Description = seedProduct.description,
         Image = seedProduct.images[0],
-        ProductCategories = new List<ProductCategory>()
+        ProductCategories = new List<ProductCategory>(),
+        ProductOrders = new List<ProductOrder>()
     };
 
     public static AvailableCategories GetCategory(string categoryName) => categoryName switch

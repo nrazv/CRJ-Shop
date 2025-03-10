@@ -2,29 +2,37 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using CRJ_Shop.Data;
 using CRJ_Shop.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace CRJ_Shop.Pages
 {
     public class CartModel : PageModel
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<AppUser> _userManager;
 
-        public CartModel(AppDbContext context)
+        public CartModel(AppDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
+        public AppUser? AppUser { get; set; }
         public List<CartItem> CartItem { get; set; }
         public bool SuccessMessage { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
+            if (User is null)
+            {
+                return RedirectToPage("/Account/Login");
+            }
+
             CartItem = await _context.CartItems
                 .Include(c => c.Product)
                 .ToListAsync();
+            return Page();
         }
 
         public async Task<IActionResult> OnPostRemoveFromCart(int itemId)
@@ -41,6 +49,13 @@ namespace CRJ_Shop.Pages
 
         public async Task<IActionResult> OnPostAddToCart(int productId)
         {
+            AppUser = await _userManager.GetUserAsync(User);
+
+            if (AppUser is null)
+            {
+                return RedirectToPage("/Account/Login");
+            }
+
             var cartItem = await _context.CartItems.FirstOrDefaultAsync(m => m.ProductId == productId);
             var product = await _context.Products.FirstOrDefaultAsync(m => m.Id == productId);
 
@@ -51,7 +66,9 @@ namespace CRJ_Shop.Pages
                 {
                     ProductId = productId,
                     Quantity = 1,
-                    Product = product
+                    Product = product,
+                    User = AppUser,
+                    UserId = AppUser.Id
                 };
                 _context.CartItems.Add(cartItem);
             }

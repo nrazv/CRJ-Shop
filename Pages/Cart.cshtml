@@ -48,7 +48,7 @@
                 Total: @Model.CartItem.Sum(x => x.Product.Price * x.Quantity) SEK
             </span>
             <div class="d-flex justify-content-end">
-                <button class="d-flex btn btn-success"> Go to checkout</button>
+                <a asp-page="Orders/Preview" class="d-flex btn btn-success"> Go to checkout</a>
             </div>
 
             <a href='javascript:history.go(-1)' class="mb-5">&#10094; Continue shopping</a>
