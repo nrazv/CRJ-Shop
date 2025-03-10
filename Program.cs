@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 // configure Identity to use IdentityDbContext
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<AppUser, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
