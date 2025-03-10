@@ -38,47 +38,11 @@ public class IndexModel : PageModel
 
         Products = await dbContext.Products.ToListAsync();
 
-        if (!_roleManager.RoleExistsAsync("Admin").GetAwaiter().GetResult())
-        {
-            var customerRole = new IdentityRole("Customer");
-            var adminRole = new IdentityRole("Admin");
-            await _roleManager.CreateAsync(adminRole);
-            await _roleManager.CreateAsync(customerRole);
-        }
 
-        var adminUsers = _userManager.GetUsersInRoleAsync("Admin").Result;
 
-        if (adminUsers.Count == 0)
-        {
-            var adminEmail = "admin@shop.com";
-            var adminUser = CreateUser();
-            adminUser.FirsName = "Admin";
-            adminUser.LastName = "Admin";
-            adminUser.Address = "crjshop.com";
-            adminUser.Email = adminEmail;
-            await _userStore.SetUserNameAsync(adminUser, adminEmail, CancellationToken.None);
-
-            var result = await _userManager.CreateAsync(adminUser, "Password123!");
-            if (result.Succeeded)
-            {
-                await _userManager.AddToRoleAsync(adminUser, "Admin");
-
-            }
-
-        }
 
     }
 
 
-    private AppUser CreateUser()
-    {
-        try
-        {
-            return Activator.CreateInstance<AppUser>();
-        }
-        catch
-        {
-            throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}");
-        }
-    }
+
 }
