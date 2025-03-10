@@ -1,5 +1,8 @@
 ﻿@page
+@using Microsoft.AspNetCore.Authorization
 @model CRJ_Shop.Pages.Products.DetailsModel
+@attribute [Authorize(Roles = "Admin")]
+
 
 @{
     ViewData["Title"] = "Details";

@@ -1,5 +1,7 @@
 ﻿@page
+@using Microsoft.AspNetCore.Authorization
 @model CRJ_Shop.Pages.Products.DeleteModel
+@attribute [Authorize(Roles = "Admin")]
 
 @{
     ViewData["Title"] = "Delete";
