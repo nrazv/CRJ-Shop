@@ -24,11 +24,12 @@ public class SeedService
         {
 
             List<SeedProduct>? seedProducts = await client.GetFromJsonAsync<List<SeedProduct>>(API_URL);
+
             foreach (var seedProduct in seedProducts)
             {
                 Product product = ProductMapper.mapSeedToProduct(seedProduct);
                 setProductCategory(product, seedProduct.category.name);
-                await addIfNotExists(product);
+                await addIfValid(product);
             }
         }
         catch (Exception ex)
@@ -46,10 +47,9 @@ public class SeedService
         product.ProductCategories.Add(productCategory);
     }
 
-    public async Task addIfNotExists(Product product)
+    public async Task addIfValid(Product product)
     {
         bool exists = await _dbContext.Products.AnyAsync(p => p.Name == product.Name);
-
         if (exists is false)
         {
             _dbContext.Products.Add(product);

@@ -19,6 +19,8 @@ namespace CRJ_Shop.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<AppUser> AppUsers { get; set; }
+        public DbSet<UserOrder> Orders { get; set; }
+        public DbSet<ProductOrder> ProductOrders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

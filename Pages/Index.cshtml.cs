@@ -9,8 +9,8 @@ namespace CRJ_Shop.Pages;
 
 public class IndexModel : PageModel
 {
-    private readonly UserManager<IdentityUser> _userManager;
-    private readonly IUserStore<IdentityUser> _userStore;
+    private readonly UserManager<AppUser> _userManager;
+    private readonly IUserStore<AppUser> _userStore;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly AppDbContext dbContext;
 
@@ -20,8 +20,8 @@ public class IndexModel : PageModel
     // Konstruktor
     public IndexModel(
             AppDbContext dbContext,
-            UserManager<IdentityUser> userManager,
-            IUserStore<IdentityUser> userStore,
+            UserManager<AppUser> userManager,
+            IUserStore<AppUser> userStore,
             RoleManager<IdentityRole> roleManager)
     {
         this.dbContext = dbContext;
