@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using CRJ_Shop.Models;
 using CRJ_Shop.Services;
 using Microsoft.EntityFrameworkCore;
+using CRJ_Shop.DbInitializer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,11 +19,16 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<SeedService>();
+builder.Services.AddScoped<DbInitializer>();
 
 var app = builder.Build();
 
 // SEED DATA
-
+using (var scope = app.Services.CreateScope())
+{
+    var dbInitializer = scope.ServiceProvider.GetRequiredService<DbInitializer>();
+    await dbInitializer.InitializeDb();
+}
 
 using (var scope = app.Services.CreateScope())
 {
@@ -42,12 +48,9 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapRazorPages();
 
 app.Run();
