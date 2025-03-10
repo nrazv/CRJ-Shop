@@ -1,10 +1,13 @@
 ﻿@page
 @using CRJ_Shop.Models
+@using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model CRJ_Shop.Pages.Products.Index
+@attribute [Authorize(Roles = "Admin")]
 
 
 @{
+    ViewData["Title"] = "Products";
 }
 
 
