@@ -2,13 +2,13 @@
 @using Microsoft.AspNetCore.Authorization
 @model CRJ_Shop.Pages.Products.ProductModel
 
-@attribute [Authorize(Roles = "Admin")]
+
 
 @{
     ViewData["Title"] = "Products";
 }
 <div class="container h-100 my-5">
-    <a class="text-decoration-none" href="/products">&#10094; Back <i class="bi bi-bag"></i></a>
+    <a class="text-decoration-none" href="/Index">&#10094; Back <i class="bi bi-bag"></i></a>
     <div class="row mt-2">
         <h1 class="fw-bold">@Model.Product.Name</h1>
         <p>@Model.Product.ProductCategories.First().Category.ProductCategory.ToString()</p>
