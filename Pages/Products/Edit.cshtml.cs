@@ -23,6 +23,10 @@ namespace CRJ_Shop.Pages.Products
         [BindProperty]
         public Product Product { get; set; } = default!;
 
+        [BindProperty]
+        public AvailableCategories SelectedCategory { get; set; }
+        public SelectList CategorySelectList { get; set; }
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -30,12 +34,33 @@ namespace CRJ_Shop.Pages.Products
                 return NotFound();
             }
 
-            var product =  await _context.Products.FirstOrDefaultAsync(m => m.Id == id);
+            var product = await _context.Products
+                .Include(p => p.ProductCategories)
+                .ThenInclude(pc => pc.Category)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
             if (product == null)
             {
                 return NotFound();
             }
+
             Product = product;
+
+            // populate dropdown with enum values
+            CategorySelectList = new SelectList(
+                Enum.GetValues(typeof(AvailableCategories))
+                    .Cast<AvailableCategories>()
+                    .Select(c => new { Id = (int)c, Name = c.ToString() }),
+                "Id",
+                "Name"
+            );
+
+            if (Product.ProductCategories != null && Product.ProductCategories.Any())
+            {
+                SelectedCategory = Product.ProductCategories
+                    .FirstOrDefault()?.Category?.ProductCategory ?? 0;
+            }
+
             return Page();
         }
 
@@ -43,17 +68,56 @@ namespace CRJ_Shop.Pages.Products
         {
             if (!ModelState.IsValid)
             {
+                // repopulate the dropdown if validation fails
+                CategorySelectList = new SelectList(
+                    Enum.GetValues(typeof(AvailableCategories))
+                        .Cast<AvailableCategories>()
+                        .Select(c => new { Id = (int)c, Name = c.ToString() }),
+                    "Id",
+                    "Name"
+                );
                 return Page();
             }
 
-            _context.Attach(Product).State = EntityState.Modified;
 
+            using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
+                _context.Attach(Product).State = EntityState.Modified;
+
+                if (SelectedCategory != 0)
+                {
+                    //get the current product ábd its categories
+                    var existingProduct = await _context.Products
+                        .Include(p => p.ProductCategories)
+                        .FirstOrDefaultAsync(p => p.Id == Product.Id);
+
+                    if (existingProduct != null)
+                    {
+                        // remove existing productcategory relationships
+                        _context.ProductCategories.RemoveRange(existingProduct.ProductCategories);
+
+                        var category = await _context.Categories
+                            .FirstOrDefaultAsync(c => c.ProductCategory == SelectedCategory);
+
+                        var productCategory = new ProductCategory
+                        {
+                            ProductId = Product.Id,
+                            CategoryId = category.Id
+                        };
+
+                        _context.ProductCategories.Add(productCategory);
+                    }
+                }
+
                 await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
+                await transaction.RollbackAsync();
+
                 if (!ProductExists(Product.Id))
                 {
                     return NotFound();
