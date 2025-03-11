@@ -3,32 +3,30 @@
 @model CRJ_Shop.Pages.Products.DetailsModel
 @attribute [Authorize(Roles = "Admin")]
 
-
 @{
     ViewData["Title"] = "Details";
 }
 
 <h1 class="fw-bold mt-4">Details</h1>
 
-<div class="my-4">
-    <table class="table">
-        <thead>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Price</th>
-        <th>Category</th>
-        <th>Image</th>
-        </thead>
-        <tbody>
-        <tr>
-            <td>@Model.Product.Name</td>
-            <td>@Model.Product.Description</td>
-            <td>@Model.Product.Price</td>
-                <td>@Model.Product.ProductCategories[0].Category.ToString()</td>
-            <td>@Model.Product.Image</td>
-        </tr>
-        </tbody>
-    </table>
+<div class="my-4 d-flex">
+    <div>
+        <div>
+            <h4 class="text-decoration-underline">Name</h4>
+            <p>@Model.Product.Name</p>
+        </div>
+        <div>
+            <h4 class="text-decoration-underline">Description</h4>
+            <p class="w-50">@Model.Product.Description</p>
+        </div>
+        <div>
+            <h4 class="text-decoration-underline">Price</h4>
+            <p class="font-monospace h3">@Model.Product.Price SEK</p>
+        </div>
+    </div>
+    <div>
+        <img src="@Model.Product.Image" class="w-100" alt="image"/>
+    </div>
 </div>
 <div class="form-group my-4">
     <a class="btn btn-secondary" asp-page="./Edit" asp-route-id="@Model.Product.Id">Edit</a>

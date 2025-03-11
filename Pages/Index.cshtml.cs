@@ -15,8 +15,11 @@ public class IndexModel : PageModel
     private readonly AppDbContext dbContext;
 
 
-    public List<Product> Products { get; set; }
 
+    public List<Product> ProductList { get; set; }
+    public List<Category> Categories { get; set; }
+    public string SearchQuery { get; set; }
+    public int? SelectedCategoryId { get; set; }
     // Konstruktor
     public IndexModel(
             AppDbContext dbContext,
@@ -32,15 +35,35 @@ public class IndexModel : PageModel
 
     }
 
-    // Method
-    public async Task OnGet()
+    public async Task OnGet(string searchQuery, int? selectedCategoryId)
     {
+        Categories = await dbContext.Categories.ToListAsync();
 
-        Products = await dbContext.Products.ToListAsync();
+        // Show prodcts based on what you search for, and what category you select
+        var productsQuery = dbContext.Products.AsQueryable();
 
+        if (!string.IsNullOrEmpty(searchQuery))
+        {
+            productsQuery = productsQuery.Where(p => p.Name.Contains(searchQuery));
+            SearchQuery = searchQuery;
+        }
 
+        // Category filter
+        if (selectedCategoryId.HasValue)
+        {
+            var selectedCategory = await dbContext.Categories
+                .FirstOrDefaultAsync(c => c.Id == selectedCategoryId);
 
+            if (selectedCategory != null)
+            {
+                productsQuery = productsQuery.Where(p => p.ProductCategories
+                    .Any(pc => pc.Category.ProductCategory == selectedCategory.ProductCategory));
+                SelectedCategoryId = selectedCategoryId; // Persist the selected category ID
+            }
+        }
 
+        // Fetch the filtered product list
+        ProductList = await productsQuery.ToListAsync();
     }
 
 
