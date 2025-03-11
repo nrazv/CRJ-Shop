@@ -50,7 +50,7 @@
                                                 <td class="font-monospace">@(product.Product.Price * product.Quantity):-</td>
                                             }
 
-   
+
                                         </tr>
                                     }
                                 </tbody>
@@ -60,7 +60,15 @@
                                     Total: @order.TotalPrice  SEK
                                 </span>
                             </div>
-
+                            @if (order.Status != Models.OrderStatus.Cancelled)
+                            {
+                                <div class="d-flex justify-content-end">
+                                    <form method="post" asp-route-id="@order.Id">
+                                        <button type="submit" class="btn btn-danger">Cancel Order</button>
+                                    </form>
+                                </div>
+                            }
+                          
                         </div>
                     </div>
                 </div>
